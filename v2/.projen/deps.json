@@ -1,6 +1,11 @@
 {
   "dependencies": [
     {
+      "name": "@aws-cdk/aws-lambda-go-alpha",
+      "version": "2.93.0-alpha.0",
+      "type": "build"
+    },
+    {
       "name": "@aws-cdk/aws-lambda-python-alpha",
       "version": "2.93.0-alpha.0",
       "type": "build"
@@ -125,6 +130,11 @@
       "name": "@types/prettier",
       "version": "2.6.0",
       "type": "override"
+    },
+    {
+      "name": "@aws-cdk/aws-lambda-go-alpha",
+      "version": "^2.93.0-alpha.0",
+      "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-lambda-python-alpha",

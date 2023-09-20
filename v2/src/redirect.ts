@@ -53,7 +53,11 @@ export function redirectHandlers(lambdas: lambda.Function[], addLayers: boolean)
 }
 
 function getDDHandler(lambdaRuntime: RuntimeType, addLayers: boolean) {
-  if (lambdaRuntime === undefined || lambdaRuntime === RuntimeType.UNSUPPORTED) {
+  if (
+    lambdaRuntime === undefined ||
+    lambdaRuntime === RuntimeType.PROVIDED_AL2 ||
+    lambdaRuntime === RuntimeType.UNSUPPORTED
+  ) {
     log.debug("Unsupported/undefined Lambda runtime");
     return;
   }

@@ -1,4 +1,5 @@
 import * as crypto from "crypto";
+import { GoFunction } from "@aws-cdk/aws-lambda-go-alpha";
 import { App, Stack } from "aws-cdk-lib";
 import { Match, Template } from "aws-cdk-lib/assertions";
 import * as lambda from "aws-cdk-lib/aws-lambda";
@@ -64,6 +65,33 @@ describe("applyLayers", () => {
         `arn:aws:lambda:${stack.region}:${DD_ACCOUNT_ID}:layer:Datadog-Node12-x:${NODE_LAYER_VERSION}`,
         `arn:aws:lambda:${stack.region}:${DD_ACCOUNT_ID}:layer:Datadog-Extension:${EXTENSION_LAYER_VERSION}`,
       ],
+    });
+  });
+
+  it("adds an extension layer when using apiKey to go lambdas that use the provided_AL2 runtime", () => {
+    const app = new App();
+    const stack = new Stack(app, "stack", {
+      env: {
+        region: "sa-east-1",
+      },
+    });
+
+    const hello = new GoFunction(stack, "HelloHandler", {
+      entry: "test/lambda/go",
+      runtime: lambda.Runtime.PROVIDED_AL2,
+    });
+
+    const datadogCdk = new Datadog(stack, "Datadog", {
+      extensionLayerVersion: EXTENSION_LAYER_VERSION,
+      apiKey: "1234",
+      addLayers: true,
+      enableDatadogTracing: false,
+      flushMetricsToLogs: true,
+      site: "datadoghq.com",
+    });
+    datadogCdk.addLambdaFunctions([hello]);
+    Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
+      Layers: [`arn:aws:lambda:${stack.region}:${DD_ACCOUNT_ID}:layer:Datadog-Extension:${EXTENSION_LAYER_VERSION}`],
     });
   });
 

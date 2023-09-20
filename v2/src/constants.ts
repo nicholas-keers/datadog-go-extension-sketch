@@ -22,6 +22,7 @@ export enum RuntimeType {
   NODE,
   PYTHON,
   JAVA,
+  PROVIDED_AL2,
   UNSUPPORTED,
 }
 
@@ -59,6 +60,7 @@ export const runtimeLookup: { [key: string]: RuntimeType } = {
   "java8.al2": RuntimeType.JAVA,
   "java11": RuntimeType.JAVA,
   "java17": RuntimeType.JAVA,
+  "provided.al2": RuntimeType.PROVIDED_AL2,
 };
 
 export const runtimeToLayerName: { [key: string]: string } = {
